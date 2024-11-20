@@ -1,16 +1,21 @@
 import AboutView from '@/views/AboutView.vue'
 import HomeView from '@/views/HomeView.vue'
+import LoginView from '@/views/LoginView.vue'
 import RegistrationView from '@/views/RegistrationView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-
+import { useAuthStore } from '@/stores/auth';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
+      // redirect : '/login',
       name: 'home',
-      component : HomeView
+      component : HomeView,
+      meta : {
+        requiresAuth : true
+      }
     },
     {
       path: '/about',
@@ -23,9 +28,39 @@ const router = createRouter({
     {
       path : '/register',
       name : 'register',
-      component : RegistrationView
-    }
+      component : RegistrationView,
+      meta : {
+        hideNavbar : true,
+      }
+    },
+    {
+      path : '/login',
+      name : 'login',
+      component : LoginView,
+      meta : {
+        hideNavbar : true,
+      }
+    },
   ]
 })
 
-export default router
+
+
+
+  router.beforeEach((to, from, next) => {
+    const authStore = useAuthStore();
+  
+    // Ako je korisnik ulogovan i pokušava da ide na login ili register, preusmeriti na home
+    if ((to.name === 'login' || to.name === 'register') && authStore.token) {
+      next('/');
+    } else if (to.meta.requiresAuth && !authStore.token) {
+      // Ako ruta zahteva autentifikaciju i korisnik nije ulogovan, preusmeri ga na login
+      next({ name: 'login' });
+    } else {
+      next(); // Ako ništa od navedenog nije tačno, dozvoli pristup
+    }
+  });
+
+
+
+export default router;

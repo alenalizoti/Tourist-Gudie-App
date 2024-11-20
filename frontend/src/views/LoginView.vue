@@ -13,18 +13,11 @@
             <div class="row justify-content-center">
               <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Log in</p>
 
-                <form class="mx-1 mx-md-4" @submit.prevent="registerUser">
+                <form class="mx-1 mx-md-4" @submit.prevent="loginUser">
 
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                      <input v-model="name" type="text" id="form3Example1c" class="form-control" />
-                      <label class="form-label" for="form3Example1c">Your Name</label>
-                    </div>
-                  </div>
-
+                  
                   <div class="d-flex flex-row align-items-center mb-4">
                     <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                     <div data-mdb-input-init class="form-outline flex-fill mb-0">
@@ -40,11 +33,12 @@
                       <label class="form-label" for="form3Example4c">Password</label>
                     </div>
                   </div>
-                  <router-link to="/login">You already have an account - Login</router-link>
+                  <router-link class="p-3" to="/register">If you don't have account - Register</router-link>
+
 
 
                   <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                    <button  type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg">Register</button>
+                    <button  type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg">Login</button>
                   </div>
 
                 </form>
@@ -69,27 +63,30 @@
 import { useAuthStore } from '@/stores/auth';
 
 export default {
-    data(){
-        return{
-            name : '',
-            email : '',
-            password : '',
-            error : ''
-        }
-    },
-    methods : {
-        async registerUser(){
-            const authStore = useAuthStore();
-            try{
-                const response = await authStore.register(this.name,this.email,this.password);
-                this.error = "";
-                this.$router.push({name : 'login'});
-            }catch(errorMessage){
-                console.error(errorMessage);
-                this.error = errorMessage;
-            }
-        }
+  data(){
+    return{
+      email : '',
+      password : '',
+      error : null
     }
+  },
+  methods : {
+    async loginUser(){
+      const authStore = useAuthStore();
+      try{
+        const response = await authStore.login(this.email,this.password)
+        // console.log(response);
+        this.error = '';
+        this.$router.push({name : 'home'});
+      }
+      catch(errorMessage){
+        console.log(errorMessage);
+        this.error = errorMessage;
+        
+      }
+
+    }
+  }
 }
 </script>
 
