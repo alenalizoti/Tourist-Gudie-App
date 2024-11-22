@@ -10,7 +10,8 @@
         <div class="d-flex">
           <router-link v-for="(item,index) in menu" :key="index" class="nav-link" aria-current="page" :to=" item.url">{{ item.name }}</router-link>
         </div>
-        <div class="ml-auto mr-13">
+        <div class="ml-auto d-flex gap-4 align-items-center">
+          <p class="pt-3">{{ user.name }}</p>
           <button @click="logout" class="btn btn-danger">Logout</button>
         </div>
       </div>
@@ -27,9 +28,10 @@ export default {
     data(){
         return{
             menu : [
-                {name : 'Destinations', url : '/destinations'},
+                {name : 'Destinations', url : '/'},
                 {name : 'Articles', url : '/articles'},
-            ]
+            ],
+            user : {}
         }
     },
     methods : {
@@ -37,8 +39,22 @@ export default {
         const authStore = useAuthStore();
         await authStore.logout();
         this.$router.push({ name: 'login' });
+      },
+      getUser(){
+        const response = localStorage.getItem('user');
+        if(response){
+          this.user = JSON.parse(response);
+          // console.log(this.user);
+          
+        }
       }
     },
+    mounted(){
+      this.getUser();
+      if (this.user.user_type === 'admin') {
+          this.menu.push({name: 'Users', url: '/users'});
+      }
+    }
       
 }
 </script>

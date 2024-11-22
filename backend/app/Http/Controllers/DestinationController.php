@@ -30,4 +30,61 @@ class DestinationController extends Controller
         $destination->delete();
         return response()->json(['message' => 'Destination deleted successfully!'],200);
     }
+
+
+    public function getDestination($id){
+        $destination = Destination::find($id);
+
+        if(!$destination){
+            return response()->json(['message' => 'Destination not found!'],404);
+        }
+
+        return response()->json(['data' => $destination, 'message' => 'Destination found successfully!'],200);
+    }
+
+    public function updateDestination(Request $request,$id){
+        $destination = Destination::find($id);
+
+        if(!$destination){
+            return response()->json(['message' => 'Destination not found!'],404);
+        }
+
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+
+        $destination->name = $validatedData['name'];
+        $destination->description = $validatedData['description'];
+        
+
+        try {
+            $destination->save();
+            return response()->json(['message' => 'Successfully updated!'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to update destination.', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function addDestination(Request $request){
+        $destination = new Destination();
+
+        try{
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'required|string'
+            ]);
+    
+            $destination->name = $validatedData['name'];
+            $destination->description = $validatedData['description'];
+            $destination->save();
+            return response()->json(['message' => 'New destination is successfully created!'],200);
+        }
+        catch(\Illuminate\Database\QueryException $e){
+            if($e->getCode() === '23000'){
+                return response()->json(['message' => 'Destination already exist. Please use diferent name for destination.'],409);
+            }
+        }
+
+    }
 }

@@ -1,7 +1,10 @@
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 const destinations = ref([]);
+const msg = ref(null);
+const router = useRouter();
 
 
 async function getDestinations(){
@@ -11,8 +14,6 @@ async function getDestinations(){
       console.log(response.data.destinations);
       destinations.value = response.data.destinations;
       // console.log(destinations);
-
-      
       
     })
     .catch((err) =>{
@@ -29,6 +30,8 @@ async function getDestinations(){
     })
     .catch((err) => {
       console.error(err);
+      msg.value = err.response.data.message;
+      
     })
       
   }
@@ -37,6 +40,14 @@ async function getDestinations(){
     if(confirm("Are you sure you want to delete this destination?")){
       deleteDestination(id)
     }
+  }
+
+  function updatePage(id){
+    router.push({name : 'update',params : {id}});
+  }
+
+  function addNewDestination(){
+    router.push({name : 'addDestination'});
   }
   
 
@@ -48,8 +59,13 @@ getDestinations();
 <template>
   <main>
     <h1 class="text-center">Destinations</h1>
+    <div @click="addNewDestination" class="d-flex justify-content-center mt-3"><button class="btn btn-primary">Add new</button></div>
     <div class="container">
-
+      <div v-if="msg" class="alert alert-danger">
+        <ul>
+           <li>{{ msg }}</li>
+        </ul>
+      </div>
       <table class="table mt-5">
         <thead>
             <tr>
@@ -63,7 +79,7 @@ getDestinations();
          <tr v-for="destination in destinations" :key="destination.id">
            <td>{{ destination.name   }}</td>
            <td>{{ destination.description.slice(0,80) + "..." }}</td>
-           <td><button class="btn btn-primary">Update</button></td>
+           <td><button @click="updatePage(destination.id)" class="btn btn-primary">Update</button></td>
            <td><button @click="confirmDelete(destination.id)" class="btn btn-danger">Delete</button></td>
          </tr>
        </tbody>

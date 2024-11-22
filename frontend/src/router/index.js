@@ -4,6 +4,13 @@ import LoginView from '@/views/LoginView.vue'
 import RegistrationView from '@/views/RegistrationView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth';
+import UpdateView from '@/views/UpdateView.vue'
+import ArticlesView from '@/views/ArticlesView.vue'
+import NewDestinationView from '@/views/NewDestinationView.vue'
+import UpdateArticleView from '@/views/UpdateArticleView.vue'
+import AddArticleView from '@/views/AddArticleView.vue'
+import UsersView from '@/views/UsersView.vue'
+import UpdateUserView from '@/views/UpdateUserView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,6 +20,62 @@ const router = createRouter({
       // redirect : '/login',
       name: 'home',
       component : HomeView,
+      meta : {
+        requiresAuth : true
+      }
+    },
+    {
+      path: '/addDestination',
+      name: 'addDestination',
+      component : NewDestinationView,
+      meta : {
+        requiresAuth : true
+      }
+    },
+    {
+      path: '/update/:id',
+      name: 'update',
+      component : UpdateView,
+      meta : {
+        requiresAuth : true
+      }
+    },
+    {
+      path: '/articles',
+      name: 'articles',
+      component : ArticlesView,
+      meta : {
+        requiresAuth : true
+      }
+    },
+    {
+      path: '/update/:id',
+      name: 'updateArticle',
+      component : UpdateArticleView,
+      meta : {
+        requiresAuth : true
+      }
+    },
+    {
+      path: '/add/article',
+      name: 'addArticle',
+      component : AddArticleView,
+      meta : {
+        requiresAuth : true
+      }
+    },
+    {
+      path: '/users',
+      name: 'users',
+      component : UsersView,
+      meta : {
+        requiresAuth : true
+      }
+    },
+    {
+      path: '/update/user/:id',
+      name: 'updateUser',
+      component : UpdateUserView,
       meta : {
         requiresAuth : true
       }
