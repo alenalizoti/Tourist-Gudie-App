@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-            $table->string("user_type");
+            $table->string("user_type")->default('content_creator');
             $table->string("status")->default('active');
         });
 

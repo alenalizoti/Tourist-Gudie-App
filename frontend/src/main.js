@@ -10,6 +10,7 @@ const app = createApp(App)
 const pinia = createPinia()
 
 
+
 app.use(createPinia())
 app.use(router)
 

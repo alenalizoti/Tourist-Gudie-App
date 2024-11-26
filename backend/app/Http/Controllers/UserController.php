@@ -45,8 +45,8 @@ class UserController extends Controller
         $validateData = $request->validate([
             'name' => 'required|min:5|max:255|string',
             'email' => 'required|email|max:255',
-            'status' => 'required',
-            'user_type' => 'required',
+            'status' => 'required|in:active,inactive',
+            'user_type' => 'required|in:admin,content_creator',
         ]);
 
         $user = User::find($id);

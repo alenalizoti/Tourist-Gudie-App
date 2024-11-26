@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class ArticleController extends Controller
 {
     public function getArticles(){
-        $articles = Article::with('user')->get();
+        $articles = Article::with('user','activities')->get();
         if(!$articles){
             return response()->json(['message' => 'Articles not found!'],404);
         }
@@ -82,6 +82,25 @@ class ArticleController extends Controller
         }
         catch(\Exception $e){
             return response()->json(['message' => 'Failed to create article.', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getArticlesByActivity($activityId){
+        try{
+
+            $articles = Article::whereHas('activities', function ($query) use ($activityId) {
+                $query->where('activity.id', $activityId);
+            })->with('user','activities')->get();
+    
+            if(!$articles){
+                return response()->json(['message' => 'No articles found for this activity!'], 404);
+            }
+    
+            return response()->json(['data' => $articles, 'message' => 'Articles fetched successfully'], 200);
+        }
+        catch(\Exception $e){
+            \Log::error($e->getMessage()); 
+            return response()->json(['message' => 'Server error!'], 500);
         }
     }
 }

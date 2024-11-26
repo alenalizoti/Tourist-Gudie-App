@@ -50,7 +50,7 @@ class DestinationController extends Controller
         }
 
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:destination,name',
             'description' => 'required|string',
         ]);
 

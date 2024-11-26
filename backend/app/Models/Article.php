@@ -22,4 +22,8 @@ class Article extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+    public function activities()
+    {
+        return $this->belongsToMany(Activity::class, 'article_activity', 'article_id', 'activity_id');
+    }
 }

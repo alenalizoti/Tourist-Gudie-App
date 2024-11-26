@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mockery\Expectation;
 
 class AuthController extends Controller
 {
     public function register (Request $request){
         $validate = $request->validate([
             'name' => 'required|string|max:255|min:5',
-            'email' => 'required|string|email|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|max:255|min:7',
         ]);
 
@@ -24,12 +25,10 @@ class AuthController extends Controller
                 return response()->json(['message' => 'User registered successfully!'], 201);
     
             } 
-            catch (\Illuminate\Database\QueryException $e) {
-                if ($e->getCode() === '23000') {
-                    return response()->json(['message' => 'Email already exists. Please use a different email address.'], 409);
-                }
+            catch (\Exception $e) {
+
+                return response()->json(['error' => 'An error occurred while registering. Please try again later.'], 500);     
             }
-            return response()->json(['error' => 'An error occurred while registering. Please try again later.'], 500);
 
     }
 

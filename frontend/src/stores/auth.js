@@ -75,6 +75,12 @@ export const useAuthStore = defineStore('auth', {
    
       }
       
+    },
+    isAdmin() {
+      return this.user?.user_type === 'admin';
+    },
+    isContentCreator() {
+      return this.user?.user_type === 'content_creator';
     }
   }
   

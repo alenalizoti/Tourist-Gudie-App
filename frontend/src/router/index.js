@@ -11,6 +11,7 @@ import UpdateArticleView from '@/views/UpdateArticleView.vue'
 import AddArticleView from '@/views/AddArticleView.vue'
 import UsersView from '@/views/UsersView.vue'
 import UpdateUserView from '@/views/UpdateUserView.vue'
+import ActivityItemView from '@/views/ActivityItemView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,6 +58,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/activity/:id',
+      name: 'activityArticles',
+      component : ActivityItemView,
+      meta : {
+        requiresAuth : true
+      }
+    },
+    {
       path: '/add/article',
       name: 'addArticle',
       component : AddArticleView,
@@ -69,7 +78,8 @@ const router = createRouter({
       name: 'users',
       component : UsersView,
       meta : {
-        requiresAuth : true
+        requiresAuth : true,
+        requiresAdmin: true
       }
     },
     {
@@ -77,7 +87,8 @@ const router = createRouter({
       name: 'updateUser',
       component : UpdateUserView,
       meta : {
-        requiresAuth : true
+        requiresAuth : true,
+        requiresAdmin: true
       }
     },
     {
@@ -119,7 +130,11 @@ const router = createRouter({
     } else if (to.meta.requiresAuth && !authStore.token) {
       // Ako ruta zahteva autentifikaciju i korisnik nije ulogovan, preusmeri ga na login
       next({ name: 'login' });
-    } else {
+    }
+    else if (to.meta.requiresAdmin && !authStore.isAdmin()){
+      next('/');
+    }
+    else {
       next(); // Ako ništa od navedenog nije tačno, dozvoli pristup
     }
   });
