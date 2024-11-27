@@ -44,6 +44,9 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
+        if ($user->status !== 'active') {
+            return response()->json(['message' => 'Your account is not active!'], 403);
+        }
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json(['token' => $token, 'user' => $user],200);

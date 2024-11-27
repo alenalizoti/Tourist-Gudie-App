@@ -25,6 +25,20 @@
                     <option v-for="destination in destinations" :key="destination.id" :value="destination.id">{{ destination.name }}</option>
                 </select>
             </div>
+            <div class="form-group">
+                <label>Assign Activities</label>
+                <div v-for="activity in activities" :key="activity.id" class="form-check">
+                    <input
+                        type="checkbox"
+                        class="form-check-input"
+                        :value="activity.id"
+                        v-model="selectedActivities"
+                    />
+                    <label class="form-check-label">
+                        {{ activity.name }}
+                    </label>
+                </div>
+         </div>
             <div class="d-flex mt-5 justify-content-center">
                 <button class="btn btn-primary">Add new</button>
             </div>
@@ -42,6 +56,8 @@ var title = ref(null);
 var content = ref(null);
 var destinationId = ref(null);
 var destinations = ref([]);
+var activities = ref([]);
+var selectedActivities = ref([]);
 var userId = getUserID();
 var errors = ref(null);
 
@@ -73,7 +89,8 @@ async function addNewArticle(){
         title : title.value,
         content : content.value,
         destination_id : destinationId.value,
-        user_id : userId
+        user_id : userId,
+        activities : selectedActivities.value
     })
     .then((response) => {
         console.log(response);
@@ -90,8 +107,20 @@ async function addNewArticle(){
     })
 }
 
+async function getActivities(){
+    try{
+        const response = await axios.get(`http://127.0.0.1:8000/api/activities`)
+        console.log(response);
+        activities.value = response.data.data;
+    }
+    catch(error){
+        console.error(error);
+    }
+}
+
 
 getDestinations();
+getActivities();
 </script>
 
 <style>

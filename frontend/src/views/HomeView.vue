@@ -77,7 +77,11 @@ getDestinations();
        <tbody>
 
          <tr v-for="destination in destinations" :key="destination.id">
-           <td>{{ destination.name   }}</td>
+           <td>
+            <router-link :to="`/destination/articles/${destination.id}`">
+              {{ destination.name   }}
+            </router-link>
+          </td>
            <td>{{ destination.description.slice(0,80) + "..." }}</td>
            <td><button @click="updatePage(destination.id)" class="btn btn-primary">Update</button></td>
            <td><button @click="confirmDelete(destination.id)" class="btn btn-danger">Delete</button></td>

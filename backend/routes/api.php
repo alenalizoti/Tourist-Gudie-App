@@ -24,8 +24,10 @@ Route::middleware(['role:admin,content_creator'])->group(function (){
     Route::post('/add/article',[ArticleController::class,"addArticle"])->name('add.article');
     Route::delete('/delete/article/{id}',[ArticleController::class,"deleteArticle"])->name('deleteArticle');
     Route::put('/update/article/{id}',[ArticleController::class,"updateArticle"])->name('updateArticle');
+    Route::get('/destination/articles/{id}',[ArticleController::class,"articlesByDestination"])->name('destination.articles');
 
-    Route::get('/articles/activity/{activityId}',[ArticleController::class,"getArticlesByActivity"])->name('activity.article');
+    Route::get('/articles/activity/{activityId}',[ArticleController::class,"getArticlesByActivity"])->name('activity.articles');
+    Route::get('/activities',[ArticleController::class,"getActivities"])->name('activities');
 
 
 });

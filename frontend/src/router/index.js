@@ -12,6 +12,7 @@ import AddArticleView from '@/views/AddArticleView.vue'
 import UsersView from '@/views/UsersView.vue'
 import UpdateUserView from '@/views/UpdateUserView.vue'
 import ActivityItemView from '@/views/ActivityItemView.vue'
+import DestinationArticlesView from '@/views/DestinationArticlesView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,9 +35,17 @@ const router = createRouter({
       }
     },
     {
-      path: '/update/:id',
+      path: '/update/destination/:id',
       name: 'update',
       component : UpdateView,
+      meta : {
+        requiresAuth : true
+      }
+    },
+    {
+      path: '/destination/articles/:id',
+      name: 'articlesByDestination',
+      component : DestinationArticlesView,
       meta : {
         requiresAuth : true
       }
@@ -50,7 +59,7 @@ const router = createRouter({
       }
     },
     {
-      path: '/update/:id',
+      path: '/update/article/:id',
       name: 'updateArticle',
       component : UpdateArticleView,
       meta : {

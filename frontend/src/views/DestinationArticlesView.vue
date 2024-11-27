@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="text-center mt-3">Articles</h1>
+    <h1 class="text-center">Articles</h1>
     <div v-for="article in articles" :key="article.id" class="card mb-4">
       <div class="card-header">
         <h5 class="card-title">{{ article.title }}</h5>
@@ -31,18 +31,17 @@
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue';
-import { useRoute, onBeforeRouteUpdate } from 'vue-router';
+import { useRoute } from 'vue-router';
 
-const route = useRoute();
-var id = route.params.id;
-var articles = ref({})
-
+const route = useRoute()
+const id = route.params.id;
+var articles = ref([])
 
 async function getArticles(){
     try{
-        const response = await axios.get(`http://127.0.0.1:8000/api/articles/activity/${id}`);
+        const response = await axios.get(`http://127.0.0.1:8000/api/destination/articles/${id}`)
+        console.log(response);
         articles.value = response.data.data;
-        console.log(articles.value);
     }
     catch(error){
         console.error(error);
@@ -51,15 +50,8 @@ async function getArticles(){
 function formattedActivities(activities) {
   return  activities.map(activity => activity.id)
 }
-onBeforeRouteUpdate((to, from) => {
-    if (to.params.id !== from.params.id) {
-        id = to.params.id;
-        getArticles(); 
-    }
-});
 
 getArticles();
-
 </script>
 
 <style>
