@@ -32,8 +32,7 @@ Navigation and Logout
 Display the logged-in user's name and a logout button.
 
 3. Public Platform for Reading Articles
-4. 
-Homepage
+4. Homepage
 A list of the 10 latest articles.
 
 Most Read Articles
