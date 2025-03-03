@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use function PHPUnit\Framework\returnArgument;
 
 class Article extends Model
 {
@@ -25,5 +26,8 @@ class Article extends Model
     public function activities()
     {
         return $this->belongsToMany(Activity::class, 'article_activity', 'article_id', 'activity_id');
+    }
+    public function comments(){
+        return $this->hasMany(Comment::class);
     }
 }

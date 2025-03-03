@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -39,6 +40,10 @@ Route::middleware(['role:admin'])->group(function (){
     Route::put('/update/user/{id}',[UserController::class,"updateUser"])->name('update.user');
 });
 
+Route::get('/app/top/articles', [ArticleController::class,'newestArticles'])->name('article.newest');
+Route::get('/app/article/{id}', [ArticleController::class,'singleArticle'])->name('read.article');
+Route::post('/app/add/comment',[CommentController::class,'storeComment'])->name('comment.store');
+Route::get('/app/add/comment/article/{id}',[CommentController::class,'getComments'])->name('comment.index');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

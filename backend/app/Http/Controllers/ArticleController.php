@@ -29,7 +29,7 @@ class ArticleController extends Controller
     }
 
     public function singleArticle($id){
-        $article = Article::with('activities')->find($id);
+        $article = Article::with('activities','destination','user')->find($id);
 
         if(!$article){
             return response()->json(['message' => 'Article not found!'],400);
@@ -131,5 +131,26 @@ class ArticleController extends Controller
         }
 
         return response()->json(['data' => $articles, 'message' => 'Successfully fethcing!'],200);
+    }
+
+    public function newestArticles(){
+
+        $articles = Article::with('activities','destination','user')
+        ->orderBy('created_at', 'desc')
+        ->limit(10)
+        ->get();
+
+        if ($articles->isEmpty()) {
+            return response()->json(['message' => 'No articles found!'], 204);
+        }
+
+        return response()->json([
+            'message' => 'Successfully fetched!',
+            'data' => $articles
+        ], 200);
+    }
+
+    public function readArticle($id){
+
     }
 }

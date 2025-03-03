@@ -14,7 +14,7 @@
         </thead>
        <tbody>
 
-         <tr v-for="article in articles" :key="article.id">
+         <tr v-for="article in paginatedArticles" :key="article.id">
            <td>{{ article.title.slice(0,20) }}...</td>
            <td>{{ article.content.slice(0,30) }}...</td>
            <td>{{ article.user.name }}</td>
@@ -29,8 +29,8 @@
            <td><button @click="confirmDelete(article.id)" class="btn btn-danger">Delete</button></td>
          </tr>
        </tbody>
-  
       </table>
+      <Pagination :items="articles" :per-page="5" @update-paginated-items="paginatedArticles = $event" />
   </div>
 </template>
 
@@ -38,11 +38,11 @@
 import axios from 'axios';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
+import Pagination from '@/components/Pagination.vue';
 const router = useRouter();
 var articles = ref([]);
 var activities = ref([]);
-
+const paginatedArticles = ref([])
 async function getArticles() {
   await axios.get(`http://127.0.0.1:8000/api/articles`)
   .then((res) => {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,11 @@ class UserController extends Controller
             return response()->json(['message' => 'User not found!'],400);
         }
 
-        $user->articles()->delete();
+        $articlsCount = Article::where('user_id',$id)->count();
+        if($articlsCount > 0){
+            return response()->json(['message'=>'Cannot delete user with associated articles'],400);
+        }
+        
         $user->delete();
 
         return response()->json(['message' => 'User and their articles have been deleted successfully.'], 200);

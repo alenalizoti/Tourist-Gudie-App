@@ -13,6 +13,8 @@ import UsersView from '@/views/UsersView.vue'
 import UpdateUserView from '@/views/UpdateUserView.vue'
 import ActivityItemView from '@/views/ActivityItemView.vue'
 import DestinationArticlesView from '@/views/DestinationArticlesView.vue'
+import AppHomeView from '@/views/AppHomeView.vue'
+import AppArticleView from '@/views/AppArticleView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -124,6 +126,17 @@ const router = createRouter({
         hideNavbar : true,
       }
     },
+    {
+      path : '/app',
+      name : 'app-home',
+      component : AppHomeView,
+     
+    },
+    {
+      path : '/app/article/:id',
+      name : 'app-article',
+      component : AppArticleView,
+    }
   ]
 })
 

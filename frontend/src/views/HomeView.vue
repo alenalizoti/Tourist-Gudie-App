@@ -1,10 +1,13 @@
 <script setup>
 import axios from 'axios';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 const destinations = ref([]);
 const msg = ref(null);
 const router = useRouter();
+
+import Pagination from '@/components/Pagination.vue';
+const paginatedDestinations = ref([]);
 
 
 async function getDestinations(){
@@ -13,8 +16,6 @@ async function getDestinations(){
     .then((response) => {
       console.log(response.data.destinations);
       destinations.value = response.data.destinations;
-      // console.log(destinations);
-      
     })
     .catch((err) =>{
       console.error(err);
@@ -49,10 +50,11 @@ async function getDestinations(){
   function addNewDestination(){
     router.push({name : 'addDestination'});
   }
+
   
 
+  getDestinations();
 
-getDestinations();
 
 </script>
 
@@ -76,7 +78,7 @@ getDestinations();
         </thead>
        <tbody>
 
-         <tr v-for="destination in destinations" :key="destination.id">
+         <tr v-for="destination in paginatedDestinations" :key="destination.id">
            <td>
             <router-link :to="`/destination/articles/${destination.id}`">
               {{ destination.name   }}
@@ -89,6 +91,7 @@ getDestinations();
        </tbody>
   
       </table>
+     <Pagination :items="destinations" :per-page="5" @update-paginated-items="paginatedDestinations = $event" />
     </div>
   </main>
 </template>
