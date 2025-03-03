@@ -19,17 +19,21 @@
 </div>
 </template>
 <script setup>
-import { defineProps, defineEmits,watch, reactive } from 'vue';
+import { defineProps,defineEmits, reactive, ref } from 'vue';
 import axios from 'axios';
-const props = defineProps({
-    article_id : Number
-})
 
+const props = defineProps({
+    article_id : Number,
+})  
+
+const emit = defineEmits(['comment-added','comment-error'])
 
 const newComment = reactive({
   author_name: '',
   content : ''
 })
+
+const msg = ref([])
 
 async function postComment(){
   try{
@@ -44,11 +48,13 @@ async function postComment(){
         alert('Comment added successfully');
         newComment.author_name = ''
         newComment.content = ''
-        location.reload()
+        emit('comment-added')
+        msg.value = null
     }
   }catch(error){
     console.error(error);
-    alert('Failed to add comment')
+    msg.value = error.response.data.errors
+    emit('comment-error',msg.value)
   }
 }
 
@@ -56,10 +62,9 @@ async function postComment(){
 
 <style scoped>
 .title {
-    margin-top: 3em;
+    margin-top: 1em;
 }
   
-
 .form-container {
     display: flex;
     justify-content: center;

@@ -2,6 +2,10 @@
   <div v-if="article.title" class="container">
     <h3 class="text-center mt-4">{{ article.title }}</h3>
     <h6 class="text-center">Destination: {{ article.destination.name }}</h6>
+    <div class="about d-flex justify-content-between mt-4">
+      <DateTimeFormater :date-time="article.created_at" />
+      <p>Author: {{ article.user.name }}</p>
+    </div>
     <div class="content ">
         <p>{{ article.content }}</p>
     </div>
@@ -14,6 +18,9 @@
 </template>
 
 <script setup>
+import { defineProps } from 'vue';
+import DateTimeFormater from './DateTimeFormater.vue';
+
 defineProps({
     article : Object
 })
@@ -21,12 +28,15 @@ defineProps({
 
 <style scoped>
 .content{
-  margin-top: 5em;
+  margin-top: 3em;
   font-size: 1.4em;
   display: flex;
   justify-content: center;
 }
 .content > p{
   padding: 0 10em;
+}
+.about{
+  padding: 0 14em;
 }
 </style>

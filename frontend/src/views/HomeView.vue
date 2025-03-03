@@ -32,7 +32,6 @@ async function getDestinations(){
     .catch((err) => {
       console.error(err);
       msg.value = err.response.data.message;
-      
     })
       
   }

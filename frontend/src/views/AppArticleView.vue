@@ -1,8 +1,15 @@
 <template>
   <div class="container">
     <SingleArticle :article="article" />
-    <ReadComments :comments="comments" />
-    <ArticleAddComments :article_id="id" />
+    <ReadComments :comments="comments"  />
+    <div v-if="errors" class="alert alert-danger">
+      <ul>
+        <li v-for="(fieldErrors, fieldName) in errors" :key="fieldName">
+          {{ fieldErrors[0] }}
+        </li>
+      </ul>
+    </div>
+    <ArticleAddComments :article_id="id" @comment-added="getComments"  @comment-error="handleCommentError"/>
   </div>
 </template>
 
@@ -21,6 +28,8 @@ const id = route.params.id
 const store = singleArticle()
 const article = computed(() => store.article);
 var comments = ref([])
+const errors = ref(null)  
+
 const loadArticle = () => {
     store.article = {
         title: '',
@@ -37,9 +46,14 @@ async function getComments(){
     const response = await axios.get(`http://127.0.0.1:8000/api/app/add/comment/article/${id}`)
     comments.value = response.data.data
     console.log(comments.value);
+    errors.value = null
   }catch(error){
     console.error(error);
   }
+}
+
+function handleCommentError(errorMessages) {
+  errors.value = errorMessages;
 }
 
 onMounted(loadArticle)
