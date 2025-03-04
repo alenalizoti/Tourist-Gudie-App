@@ -41,7 +41,8 @@ Route::middleware(['role:admin'])->group(function (){
 });
 
 Route::get('/app/top/articles', [ArticleController::class,'newestArticles'])->name('article.newest');
-Route::get('/app/article/{id}', [ArticleController::class,'singleArticle'])->name('read.article');
+Route::get('/app/article/{id}', [ArticleController::class,'incrementVisitCount'])->name('read.article');
+Route::get('/app/most-read/articles',[ArticleController::class,'mostRead'])->name('most.read');
 Route::post('/app/add/comment',[CommentController::class,'storeComment'])->name('comment.store');
 Route::get('/app/add/comment/article/{id}',[CommentController::class,'getComments'])->name('comment.index');
 

@@ -11,9 +11,11 @@
           <router-link class="nav-link active" aria-current="page" to="/app">Home</router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Articles</a>
+          <router-link class="nav-link"  to="/app/most-read">Most read</router-link>
         </li>
-        
+        <li class="nav-item">
+          <router-link class="nav-link"  to="/app/destination/articles">Articles by Destination</router-link>
+        </li>
       </ul>
     </div>
   </div>

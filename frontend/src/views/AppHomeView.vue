@@ -4,9 +4,7 @@
         <ItemCard :items="articles" />
     </div>
     <div v-else class="d-flex justify-content-center align-items-center vh-100">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
+        <Spinner />
     </div>
 </template>
 
@@ -15,7 +13,7 @@ import axios from 'axios';
 import { ref } from 'vue';
 import { onMounted } from 'vue';
 import ItemCard from '@/components/ItemCard.vue';
-
+import Spinner from '@/components/Spinner.vue';
 const articles = ref([])
 
 async function getArticles(){

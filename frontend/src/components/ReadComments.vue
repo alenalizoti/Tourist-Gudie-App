@@ -28,7 +28,7 @@
 
   watch(() => props.comments, (newComments) => {
   paginatedComments.value = newComments;
-}, { immediate: true });
+  }, { immediate: true });
   </script>
 
   <style scoped>

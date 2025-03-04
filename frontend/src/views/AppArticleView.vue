@@ -44,7 +44,7 @@ const loadArticle = () => {
 async function getComments(){
   try{
     const response = await axios.get(`http://127.0.0.1:8000/api/app/add/comment/article/${id}`)
-    comments.value = response.data.data
+    comments.value = response.data.data 
     console.log(comments.value);
     errors.value = null
   }catch(error){

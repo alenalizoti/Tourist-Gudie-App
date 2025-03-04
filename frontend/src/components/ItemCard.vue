@@ -9,7 +9,8 @@
         <p class="card-text">{{ shortContent(item.content) }} ...</p>
         <div  v-if="item.activities.length">
             <p class="text-center">Activities:</p>
-            <a  v-for="activity in item.activities" :key="activity.id" href="#" class="card-link">{{ activity.name }}</a>
+            <show-activities :activities="item.activities"></show-activities>
+            <!-- <a  v-for="activity in item.activities" :key="activity.id" href="#" class="card-link">{{ activity.name }}</a> -->
         </div>
         <p  class="card-text">Author: {{ item.user.name }}</p>
       </div>
@@ -20,6 +21,8 @@
 <script setup>
 import router from '@/router'
 import { watch } from 'vue';
+import ShowActivities from './ShowActivities.vue';
+
 
 const props = defineProps({
     items : Array,

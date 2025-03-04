@@ -15,6 +15,9 @@ import ActivityItemView from '@/views/ActivityItemView.vue'
 import DestinationArticlesView from '@/views/DestinationArticlesView.vue'
 import AppHomeView from '@/views/AppHomeView.vue'
 import AppArticleView from '@/views/AppArticleView.vue'
+import AppMostReadView from '@/views/AppMostReadView.vue'
+import AppArticlesByDestView from '@/views/AppArticlesByDestView.vue'
+import AppArticleByActivityView from '@/views/AppArticleByActivityView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -136,10 +139,24 @@ const router = createRouter({
       path : '/app/article/:id',
       name : 'app-article',
       component : AppArticleView,
-    }
+    },
+    {
+      path : '/app/most-read',
+      name : 'most-read',
+      component : AppMostReadView,
+    },
+    {
+      path : '/app/destination/articles',
+      name : 'articles-by-dest',
+      component : AppArticlesByDestView,
+    },
+    {
+      path : '/app/articles/activity/:id',
+      name : 'articles-by-activity',
+      component : AppArticleByActivityView,
+    },
   ]
 })
-
 
 
 

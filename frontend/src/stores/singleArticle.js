@@ -9,11 +9,14 @@ export const singleArticle = defineStore('articles', () => {
         try{
             const response = await axios.get(`http://127.0.0.1:8000/api/app/article/${id}`)
             article.value = response.data.data   
+            console.log(article.value);
         }
         catch(error){
             console.error(error);
         }   
     }
+
+    
 
     return {article,getArticle}
 })

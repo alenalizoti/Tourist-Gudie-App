@@ -1,5 +1,6 @@
 <template>
-    <span>Posted: {{ formattedDateTime }}</span>
+    <span v-if="formattedDateTime">Posted: {{ formattedDateTime }}</span>
+    <span v-else>Posted: No information...</span>
   </template>
 <script setup>
 import { defineProps, computed } from 'vue';

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ArticleController extends Controller
 {
@@ -100,7 +102,7 @@ class ArticleController extends Controller
 
             $articles = Article::whereHas('activities', function ($query) use ($activityId) {
                 $query->where('activity.id', $activityId);
-            })->with('user','activities')->get();
+            })->with('user','activities','destination')->get();
     
             if(!$articles){
                 return response()->json(['message' => 'No articles found for this activity!'], 404);
@@ -150,7 +152,24 @@ class ArticleController extends Controller
         ], 200);
     }
 
-    public function readArticle($id){
+    public function incrementVisitCount($id){
+        $article = Article::with('activities','destination','user')->find($id);
 
+        if(!$article){
+            return response()->json(['message' => 'Article not found!'],400);
+        }
+
+        $article->increment('visit_count');
+        return response()->json(['data' => $article, 'message' => 'Successfully fetching article'],200);
+    }
+    public function mostRead(){
+        $articles = Article::with('activities','destination','user')->whereBetween('created_at',[Carbon::now()->subMonth(), Carbon::now()])->orderBy('visit_count','desc')
+        ->limit(10)->get();
+
+        if(count($articles) == 0){
+            return response()->json(['message' => 'Articles not found!'],404);
+        }
+
+        return response()->json(['data' => $articles, 'message' => 'Successfully fetchin articles'],200);
     }
 }

@@ -32,7 +32,7 @@ class CommentController extends Controller
         }
     }
     public function getComments($id){
-        $comments = Comment::where('article_id',$id)->get();
+        $comments = Comment::where('article_id',$id)->orderBy('created_at','desc')->get();
         if(count($comments) == 0){
             return response()->json(['message' => 'Comments not found!'],404);
         }
